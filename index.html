@@ -16,9 +16,9 @@
     :root {
       --bg:            #0A0A0F;
       --bg-surface:    #111118;
-      --text:          #E8E5E0;
-      --text-dim:      #8A8790;
-      --text-muted:    #4A4850;
+      --text:          #F5F2EC;
+      --text-dim:      #C5C2BB;
+      --text-muted:    #7A7770;
       --accent:        #C8622A;
       --accent-light:  #E07A3A;
       --accent-glow:   rgba(200,98,42,0.25);
@@ -35,8 +35,17 @@
       background: var(--bg);
       color: var(--text);
       overflow-x: hidden;
+      font-weight: 400;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* ── VANTA BACKGROUND (hero only) ─────────── */
+    #vanta-bg {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
     }
 
     h1, h2, h3 { font-family: 'Instrument Serif', serif; font-weight: 400; }
@@ -110,6 +119,8 @@
       pointer-events: none;
     }
     .hero-line1 {
+      position: relative;
+      z-index: 2;
       font-family: 'Inter', sans-serif;
       font-size: clamp(2.4rem, 5.5vw, 4.2rem);
       font-weight: 700;
@@ -120,6 +131,8 @@
     }
     .hero-line1 .name { color: var(--accent-light); }
     .hero-line2 {
+      position: relative;
+      z-index: 2;
       font-family: 'Instrument Serif', serif;
       font-size: clamp(1.3rem, 3vw, 2.1rem);
       font-style: italic;
@@ -133,6 +146,7 @@
       bottom: 2.5rem;
       left: 50%;
       transform: translateX(-50%);
+      z-index: 2;
       opacity: 0;
       animation: fadeIn 1s ease 1.8s forwards;
     }
@@ -157,9 +171,10 @@
     }
     .about-body { max-width: 660px; }
     .about-body p {
-      font-size: 1.02rem;
-      line-height: 1.85;
+      font-size: 1.05rem;
+      line-height: 1.8;
       color: var(--text-dim);
+      font-weight: 400;
       margin-bottom: 1.4rem;
     }
     .about-body p:last-child { margin-bottom: 0; }
@@ -340,6 +355,7 @@
 
   <!-- ── HERO ────────────────────────────────── -->
   <section id="hero">
+    <div id="vanta-bg"></div>
     <h1 class="hero-line1">Hi, my name is <span class="name">Aayush.</span></h1>
     <p class="hero-line2">It's great to meet you</p>
     <div class="scroll-cue"><span></span></div>
@@ -405,7 +421,31 @@
   <!-- Leaflet JS (local) -->
   <script src="leaflet.js"></script>
 
+  <!-- Vanta.js animated background (popular library) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vanta@0.5.24/dist/vanta.net.min.js"></script>
+
   <script>
+    /* ── Vanta animated background ──────────────── */
+    if (typeof VANTA !== 'undefined' && VANTA.NET) {
+      VANTA.NET({
+        el: '#vanta-bg',
+        mouseControls: true,
+        touchControls: true,
+        gyroControls: false,
+        minHeight: 200.0,
+        minWidth: 200.0,
+        scale: 1.0,
+        scaleMobile: 1.0,
+        color: 0xc8622a,
+        backgroundColor: 0x0a0a0f,
+        points: 9.0,
+        maxDistance: 22.0,
+        spacing: 18.0,
+        showDots: true
+      });
+    }
+
     /* ── Nav scroll ─────────────────────────────── */
     const nav = document.getElementById('navbar');
     window.addEventListener('scroll', () => {
