@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aayush George</title>
+  <meta name="description" content="Aayush George — Product Manager" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <!-- Leaflet CSS (local) -->
+  <link rel="stylesheet" href="leaflet.css" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:            #0A0A0F;
+      --bg-surface:    #111118;
+      --text:          #E8E5E0;
+      --text-dim:      #8A8790;
+      --text-muted:    #4A4850;
+      --accent:        #C8622A;
+      --accent-light:  #E07A3A;
+      --accent-glow:   rgba(200,98,42,0.25);
+      --border:        rgba(255,255,255,0.06);
+      --ease-out:      cubic-bezier(0.16, 1, 0.3, 1);
+      --max-w:         1100px;
+      --radius:        10px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', -apple-system, system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    h1, h2, h3 { font-family: 'Instrument Serif', serif; font-weight: 400; }
+
+    ::selection { background: var(--accent); color: #fff; }
+    :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+    .container { max-width: var(--max-w); margin: 0 auto; padding: 0 2.5rem; }
+
+    /* ── REVEAL ─────────────────────────────────── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.85s var(--ease-out), transform 0.85s var(--ease-out);
+    }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    /* ── NAV ────────────────────────────────────── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 1000;
+      padding: 1.2rem 2.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: background 0.35s, backdrop-filter 0.35s;
+    }
+    nav.scrolled {
+      background: rgba(10,10,15,0.88);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      font-family: 'Instrument Serif', serif;
+      font-style: italic;
+      font-size: 1.35rem;
+      color: var(--text);
+      text-decoration: none;
+    }
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; align-items: center; }
+    .nav-links a {
+      color: var(--text-dim);
+      text-decoration: none;
+      font-size: 0.82rem;
+      transition: color 0.3s;
+    }
+    .nav-links a:hover { color: var(--text); }
+
+    /* ── HERO ───────────────────────────────────── */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      text-align: center;
+      position: relative;
+      padding: 0 2rem;
+    }
+    #hero::before {
+      content: '';
+      position: absolute;
+      width: min(700px, 90vw);
+      height: min(700px, 90vw);
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(200,98,42,0.05) 0%, transparent 70%);
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+    }
+    .hero-line1 {
+      font-family: 'Inter', sans-serif;
+      font-size: clamp(2.4rem, 5.5vw, 4.2rem);
+      font-weight: 700;
+      line-height: 1.2;
+      color: var(--text);
+      opacity: 0;
+      animation: fadeSlideUp 0.9s var(--ease-out) 0.2s forwards;
+    }
+    .hero-line1 .name { color: var(--accent-light); }
+    .hero-line2 {
+      font-family: 'Instrument Serif', serif;
+      font-size: clamp(1.3rem, 3vw, 2.1rem);
+      font-style: italic;
+      color: var(--text-dim);
+      margin-top: 0.6rem;
+      opacity: 0;
+      animation: fadeSlideUp 0.9s var(--ease-out) 0.65s forwards;
+    }
+    .scroll-cue {
+      position: absolute;
+      bottom: 2.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      opacity: 0;
+      animation: fadeIn 1s ease 1.8s forwards;
+    }
+    .scroll-cue span {
+      display: block;
+      width: 1px;
+      height: 38px;
+      background: var(--text-muted);
+      margin: 0 auto;
+      animation: scrollLine 2.2s ease-in-out infinite;
+    }
+
+    /* ── ABOUT ──────────────────────────────────── */
+    #about { padding: 8rem 0 6rem; }
+    .section-label {
+      font-size: 0.62rem;
+      font-weight: 600;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 2rem;
+    }
+    .about-body { max-width: 660px; }
+    .about-body p {
+      font-size: 1.02rem;
+      line-height: 1.85;
+      color: var(--text-dim);
+      margin-bottom: 1.4rem;
+    }
+    .about-body p:last-child { margin-bottom: 0; }
+    .about-links {
+      display: flex;
+      gap: 0.75rem;
+      margin-top: 2rem;
+      flex-wrap: wrap;
+    }
+    .about-link-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+      padding: 0.6rem 1.1rem;
+      border-radius: 6px;
+      text-decoration: none;
+      font-size: 0.82rem;
+      font-weight: 500;
+      letter-spacing: 0.01em;
+      transition: background 0.2s, color 0.2s, border-color 0.2s, transform 0.2s var(--ease-out);
+      border: 1px solid transparent;
+    }
+    .about-link-btn:hover { transform: translateY(-2px); }
+    /* LinkedIn — official brand blue */
+    .about-link-btn.linkedin {
+      background: rgba(10,102,194,0.12);
+      color: #5ba3f5;
+      border-color: rgba(10,102,194,0.35);
+    }
+    .about-link-btn.linkedin:hover {
+      background: rgba(10,102,194,0.22);
+      border-color: rgba(10,102,194,0.6);
+    }
+    /* Resume — neutral outline */
+    .about-link-btn.resume {
+      background: rgba(255,255,255,0.04);
+      color: var(--text-dim);
+      border-color: rgba(255,255,255,0.1);
+    }
+    .about-link-btn.resume:hover {
+      background: rgba(255,255,255,0.08);
+      border-color: rgba(255,255,255,0.2);
+      color: var(--text);
+    }
+
+    /* ── JOURNEY / MAP ──────────────────────────── */
+    #journey { padding: 4rem 0 8rem; }
+    .journey-heading {
+      font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+      line-height: 1.15;
+      color: var(--text);
+      margin-bottom: 2.5rem;
+    }
+
+    /* Leaflet map container */
+    .map-wrapper {
+      position: relative;
+      width: 100%;
+      max-width: 960px;
+      margin: 0 auto 2.5rem;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+    #map {
+      height: 420px;
+      width: 100%;
+      background: #0d0d14;
+    }
+
+    /* Override Leaflet attribution */
+    .leaflet-control-attribution {
+      background: rgba(10,10,15,0.75) !important;
+      color: var(--text-muted) !important;
+      font-size: 0.65rem !important;
+      backdrop-filter: blur(8px);
+    }
+    .leaflet-control-attribution a { color: var(--text-muted) !important; }
+
+    /* Custom city markers */
+    .city-marker-wrap {
+      position: relative;
+      width: 14px;
+      height: 14px;
+    }
+    .city-marker-dot {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--accent-light);
+      box-shadow: 0 0 0 2px rgba(224,122,58,0.35);
+      z-index: 2;
+      transition: opacity 0.4s;
+    }
+    .city-marker-ring {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 22px; height: 22px;
+      border-radius: 50%;
+      border: 1.5px solid rgba(224,122,58,0.4);
+      z-index: 1;
+      animation: ringPulse 2.5s ease-in-out infinite;
+    }
+    .city-label-el {
+      position: absolute;
+      white-space: nowrap;
+      font-family: 'Inter', sans-serif;
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      color: rgba(232,229,224,0.9);
+      text-shadow: 0 1px 4px rgba(0,0,0,0.8);
+      top: 14px;
+      left: 50%;
+      transform: translateX(-50%);
+      pointer-events: none;
+    }
+
+
+    /* ── FOOTER ─────────────────────────────────── */
+    footer {
+      padding: 3rem 0;
+      border-top: 1px solid var(--border);
+      text-align: center;
+    }
+    footer p { font-size: 0.78rem; color: var(--text-muted); }
+
+    /* ── KEYFRAMES ──────────────────────────────── */
+    @keyframes fadeSlideUp {
+      from { opacity: 0; transform: translateY(22px); }
+      to   { opacity: 1; transform: none; }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+    @keyframes scrollLine {
+      0%   { transform: scaleY(0); transform-origin: top; opacity: 1; }
+      50%  { transform: scaleY(1); transform-origin: top; opacity: 1; }
+      51%  { transform: scaleY(1); transform-origin: bottom; opacity: 1; }
+      100% { transform: scaleY(0); transform-origin: bottom; opacity: 0; }
+    }
+    @keyframes ringPulse {
+      0%, 100% { opacity: 0.6; transform: translate(-50%,-50%) scale(1); }
+      50%       { opacity: 0.15; transform: translate(-50%,-50%) scale(1.6); }
+    }
+
+    /* ── RESPONSIVE ─────────────────────────────── */
+    @media (max-width: 900px) {
+      #map { height: 340px; }
+    }
+    @media (max-width: 640px) {
+      .container { padding: 0 1.25rem; }
+      nav { padding: 1rem 1.25rem; }
+      #about { padding: 5rem 0 4rem; }
+      #journey { padding: 3rem 0 5rem; }
+      #map { height: 280px; }
+    }
+    @media (max-width: 420px) {
+      .nav-links { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── NAV ─────────────────────────────────── -->
+  <nav id="navbar">
+    <a href="#hero" class="nav-logo">AG</a>
+    <ul class="nav-links">
+      <li><a href="#">Home</a></li>
+      <li><a href="experience.html">Experience</a></li>
+      <li><a href="projects.html">Projects</a></li>
+    </ul>
+  </nav>
+
+  <!-- ── HERO ────────────────────────────────── -->
+  <section id="hero">
+    <h1 class="hero-line1">Hi, my name is <span class="name">Aayush.</span></h1>
+    <p class="hero-line2">It's great to meet you</p>
+    <div class="scroll-cue"><span></span></div>
+  </section>
+
+  <!-- ── ABOUT ───────────────────────────────── -->
+  <section id="about">
+    <div class="container">
+      <p class="section-label reveal">ABOUT</p>
+      <div class="about-body reveal">
+        <p>I'm a Product Manager at Bectran, where I work with engineering, and QA teams to build and improve a B2B SaaS platform used by organizations that range from mid-market to enterprise.</p>
+        <p>Day-to-day, that means translating customer needs into clear requirements, collaborating through sprint cycles to ship quality releases, and keeping both the business and technical sides of a problem in view. Over the past two years, I've helped deliver 20+ feature enhancements and an AI-powered OCR solution that improved operational efficiency for users by 30%.</p>
+        <p>Before Bectran, I contributed to Generative AI initiatives at Kimberly-Clark by supporting a strategic roadmap focused on Responsible AI and leveraging Generative AI to improve and optimize content creation workflows across major retail channels.</p>
+        <p>I hold an MS in Information Systems from Indiana University alongside a background in Marketing, which has helped me solidify myself as the bridge between business and technical stakeholders.</p>
+
+        <div class="about-links">
+          <!-- LinkedIn — official "in" mark -->
+          <a href="https://www.linkedin.com/in/aayushmgeorge"
+             target="_blank" rel="noopener noreferrer"
+             class="about-link-btn linkedin">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+            </svg>
+            LinkedIn
+          </a>
+
+          <!-- Resume — download icon -->
+          <a href="Aayush_George_Resume.pdf"
+             target="_blank" rel="noopener noreferrer"
+             download="Aayush_George_Resume.pdf"
+             class="about-link-btn resume">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+              <polyline points="14 2 14 8 20 8"/>
+              <line x1="12" y1="18" x2="12" y2="12"/>
+              <polyline points="9 15 12 18 15 15"/>
+            </svg>
+            Resume
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── JOURNEY ─────────────────────────────── -->
+  <section id="journey">
+    <div class="container">
+      <p class="section-label reveal">MY JOURNEY</p>
+      <h2 class="journey-heading reveal">Places I've called home</h2>
+
+      <div class="map-wrapper reveal" id="map-wrapper">
+        <div id="map"></div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── FOOTER ──────────────────────────────── -->
+  <footer>
+    <p>&copy; 2026 Aayush George</p>
+  </footer>
+
+  <!-- Leaflet JS (local) -->
+  <script src="leaflet.js"></script>
+
+  <script>
+    /* ── Nav scroll ─────────────────────────────── */
+    const nav = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 60);
+    }, { passive: true });
+
+    /* ── Scroll reveal ──────────────────────────── */
+    const revealObs = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          revealObs.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
+
+    /* ── Map + flight path ──────────────────────── */
+    // labelStyle: inline CSS string for positioning the text label relative to the dot
+    const CITIES = [
+      { name: 'MUMBAI',      lat: 19.076,  lng:  72.878, labelStyle: 'top:14px;left:50%;transform:translateX(-50%)' },
+      { name: 'MUSCAT',      lat: 23.588,  lng:  58.593, labelStyle: 'top:14px;left:8px'   }, // below-right (away from Dubai above)
+      { name: 'DUBAI',       lat: 25.204,  lng:  55.271, labelStyle: 'top:-22px;left:8px'  }, // above-right (away from Muscat below)
+      { name: 'BLOOMINGTON', lat: 39.165,  lng: -86.526, labelStyle: 'top:14px;right:8px'  }, // below-left (away from Schaumburg above)
+      { name: 'SCHAUMBURG',  lat: 42.033,  lng: -88.084, labelStyle: 'top:-22px;right:8px' }, // above-left (away from Bloomington below)
+    ];
+
+    /* Great-circle interpolation (Slerp) */
+    function greatCirclePoints(a, b, n) {
+      const toRad = d => d * Math.PI / 180;
+      const toDeg = r => r * 180 / Math.PI;
+      const lat1 = toRad(a[0]), lon1 = toRad(a[1]);
+      const lat2 = toRad(b[0]), lon2 = toRad(b[1]);
+      const d = 2 * Math.asin(Math.sqrt(
+        Math.pow(Math.sin((lat2 - lat1) / 2), 2) +
+        Math.cos(lat1) * Math.cos(lat2) * Math.pow(Math.sin((lon2 - lon1) / 2), 2)
+      ));
+      if (d < 0.0001) return [[a[0], a[1]], [b[0], b[1]]];
+      const pts = [];
+      for (let i = 0; i <= n; i++) {
+        const f = i / n;
+        const A = Math.sin((1 - f) * d) / Math.sin(d);
+        const B = Math.sin(f * d) / Math.sin(d);
+        const x = A * Math.cos(lat1) * Math.cos(lon1) + B * Math.cos(lat2) * Math.cos(lon2);
+        const y = A * Math.cos(lat1) * Math.sin(lon1) + B * Math.cos(lat2) * Math.sin(lon2);
+        const z = A * Math.sin(lat1) + B * Math.sin(lat2);
+        pts.push([toDeg(Math.atan2(z, Math.sqrt(x * x + y * y))), toDeg(Math.atan2(y, x))]);
+      }
+      return pts;
+    }
+
+    /* Initialise Leaflet */
+    const map = L.map('map', {
+      zoomControl: false,
+      scrollWheelZoom: false,   // don't hijack page scroll
+      doubleClickZoom: false,
+      attributionControl: true,
+    });
+
+    /* CartoDB Dark Matter — no labels, matches dark theme */
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',
+      subdomains: 'abcd',
+      maxZoom: 19,
+    }).addTo(map);
+
+    /* Fit bounds to all cities */
+    const latlngs = CITIES.map(c => [c.lat, c.lng]);
+    map.fitBounds(L.latLngBounds(latlngs), { padding: [48, 72] });
+
+    /* ── Custom markers (hidden initially) ─── */
+    const markerEls = [];
+    CITIES.forEach((city, i) => {
+      const icon = L.divIcon({
+        className: '',
+        html: `
+          <div class="city-marker-wrap">
+            <div class="city-marker-dot" id="mdot${i}"></div>
+            <div class="city-marker-ring" id="mring${i}" style="display:none"></div>
+          </div>
+          <div class="city-label-el" id="mlbl${i}" style="opacity:0;${city.labelStyle}">${city.name}</div>`,
+        iconSize: [14, 14],
+        iconAnchor: [7, 7],
+      });
+      L.marker([city.lat, city.lng], { icon }).addTo(map);
+      markerEls.push({ dot: null, ring: null, lbl: null });  // populated after DOM settles
+    });
+
+    /* Helper: grab marker DOM elements (they render async) */
+    function resolveMarkerEls() {
+      for (let i = 0; i < CITIES.length; i++) {
+        markerEls[i].dot  = document.getElementById('mdot'  + i);
+        markerEls[i].ring = document.getElementById('mring' + i);
+        markerEls[i].lbl  = document.getElementById('mlbl'  + i);
+        /* Hide dots initially */
+        if (markerEls[i].dot) markerEls[i].dot.style.opacity = '0';
+      }
+    }
+
+    function activateCity(i) {
+      const el = markerEls[i];
+      if (!el) return;
+      if (el.dot)  { el.dot.style.opacity = '1'; }
+      if (el.ring) { el.ring.style.display = 'block'; }
+      if (el.lbl)  { el.lbl.style.opacity = '1'; }
+    }
+
+    /* ── Flight paths ─────────────────────────── */
+    const SEGMENTS = [
+      [0, 1],   // Mumbai → Muscat
+      [1, 2],   // Muscat → Dubai
+      [2, 3],   // Dubai  → Bloomington  (long great-circle arc)
+      [3, 4],   // Bloomington → Schaumburg
+    ];
+
+    const DURATIONS = [900, 500, 2600, 500]; // ms per path draw
+    const GAPS      = [200, 200, 300, 200];  // pause before next path
+
+    const polylines  = [];
+    const glowlines  = [];
+
+    /* Build polylines (invisible until animated) */
+    SEGMENTS.forEach(([a, b], i) => {
+      const pts    = greatCirclePoints([CITIES[a].lat, CITIES[a].lng], [CITIES[b].lat, CITIES[b].lng], 80);
+
+      const glow = L.polyline(pts, {
+        color: 'rgba(224,122,58,0.18)',
+        weight: 5,
+        opacity: 1,
+        smoothFactor: 1,
+        lineCap: 'round',
+      }).addTo(map);
+
+      const line = L.polyline(pts, {
+        color: '#C8622A',
+        weight: 1.6,
+        opacity: 0.8,
+        smoothFactor: 1,
+        lineCap: 'round',
+      }).addTo(map);
+
+      /* Initially hide via dashoffset */
+      const svgPath = line._path;
+      const svgGlow = glow._path;
+      if (svgPath) {
+        const len = svgPath.getTotalLength();
+        svgPath.style.strokeDasharray  = len;
+        svgPath.style.strokeDashoffset = len;
+        if (svgGlow) {
+          svgGlow.style.strokeDasharray  = len;
+          svgGlow.style.strokeDashoffset = len;
+        }
+      }
+
+      polylines.push(line);
+      glowlines.push(glow);
+    });
+
+    /* Animate a single polyline, call cb when done */
+    function drawPath(i, cb) {
+      const line = polylines[i];
+      const glow = glowlines[i];
+      const svgPath = line._path;
+      const svgGlow = glow._path;
+      if (!svgPath) { cb && cb(); return; }
+
+      const len = svgPath.getTotalLength();
+      const dur = DURATIONS[i];
+
+      svgPath.style.strokeDasharray  = len;
+      svgPath.style.strokeDashoffset = len;
+      svgPath.style.transition = `stroke-dashoffset ${dur}ms cubic-bezier(0.4,0,0.2,1)`;
+      svgPath.getBoundingClientRect(); // force reflow
+      svgPath.style.strokeDashoffset = '0';
+
+      if (svgGlow) {
+        svgGlow.style.strokeDasharray  = len;
+        svgGlow.style.strokeDashoffset = len;
+        svgGlow.style.transition = `stroke-dashoffset ${dur}ms cubic-bezier(0.4,0,0.2,1)`;
+        svgGlow.getBoundingClientRect();
+        svgGlow.style.strokeDashoffset = '0';
+      }
+
+      setTimeout(() => {
+        /* Switch to dotted pattern */
+        svgPath.style.transition = 'none';
+        svgPath.style.strokeDasharray = '7 5';
+        svgPath.style.strokeDashoffset = '0';
+        cb && cb();
+      }, dur);
+    }
+
+    /* Sequential animation */
+    function startAnimation() {
+      resolveMarkerEls();
+      activateCity(0);            // show first city immediately
+
+      let delay = 400;
+      SEGMENTS.forEach((_, i) => {
+        setTimeout(() => {
+          drawPath(i, () => activateCity(i + 1));
+        }, delay);
+        delay += DURATIONS[i] + GAPS[i];
+      });
+    }
+
+    /* Trigger when map wrapper enters viewport */
+    let mapAnimated = false;
+    const mapObs = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting && !mapAnimated) {
+          mapAnimated = true;
+          /* Small delay so tile textures load first */
+          setTimeout(() => {
+            resolveMarkerEls();
+            startAnimation();
+          }, 600);
+          mapObs.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.3 });
+
+    /* Wait for Leaflet to finish rendering before observing */
+    map.whenReady(() => {
+      mapObs.observe(document.getElementById('map-wrapper'));
+    });
+  </script>
+
+</body>
+</html>

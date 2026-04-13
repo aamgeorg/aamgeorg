@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Projects — Aayush George</title>
+  <meta name="description" content="Habitat Budget — a streak-based budgeting app by Aayush George" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:            #0A0A0F;
+      --bg-surface:    #111118;
+      --text:          #E8E5E0;
+      --text-dim:      #8A8790;
+      --text-muted:    #4A4850;
+      --accent:        #C8622A;
+      --accent-light:  #E07A3A;
+      --accent-pale:   rgba(200,98,42,0.12);
+      --border:        rgba(255,255,255,0.06);
+      --border-accent: rgba(200,98,42,0.3);
+      --ease-out:      cubic-bezier(0.16, 1, 0.3, 1);
+      --max-w:         1100px;
+      --radius:        12px;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', -apple-system, system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+    h1, h2, h3 { font-family: 'Instrument Serif', serif; font-weight: 400; }
+    ::selection { background: var(--accent); color: #fff; }
+    :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+    .container { max-width: var(--max-w); margin: 0 auto; padding: 0 2.5rem; }
+
+    /* ── REVEAL ─────────────────────────────────── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.85s var(--ease-out), transform 0.85s var(--ease-out);
+    }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    /* ── NAV ────────────────────────────────────── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 1.2rem 2.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(10,10,15,0.88);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      font-family: 'Instrument Serif', serif;
+      font-style: italic;
+      font-size: 1.35rem;
+      color: var(--text);
+      text-decoration: none;
+    }
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; align-items: center; }
+    .nav-links a { color: var(--text-dim); text-decoration: none; font-size: 0.82rem; transition: color 0.3s; }
+    .nav-links a:hover, .nav-links a.active { color: var(--text); }
+
+    /* ── HERO ───────────────────────────────────── */
+    .project-hero {
+      padding: 10rem 0 6rem;
+      position: relative;
+    }
+    .project-hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 60% 50% at 50% 0%, rgba(200,98,42,0.06) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+    .hero-label {
+      font-size: 0.62rem;
+      font-weight: 600;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1.5rem;
+    }
+    .hero-title {
+      font-size: clamp(2.4rem, 4.5vw, 3.6rem);
+      line-height: 1.1;
+      margin-bottom: 1.2rem;
+    }
+    .hero-tagline {
+      font-size: 1.05rem;
+      line-height: 1.7;
+      color: var(--text-dim);
+      margin-bottom: 2rem;
+      max-width: 460px;
+    }
+    .app-store-badge {
+      display: inline-block;
+      transition: opacity 0.2s, transform 0.2s var(--ease-out);
+    }
+    .app-store-badge:hover { opacity: 0.85; transform: translateY(-2px); }
+    .app-store-badge img { display: block; height: 44px; width: auto; }
+
+    /* App icon */
+    .hero-right { display: flex; justify-content: center; align-items: center; }
+    .app-icon-wrap {
+      position: relative;
+      width: 180px;
+      height: 180px;
+    }
+    .app-icon-wrap::before {
+      content: '';
+      position: absolute;
+      inset: -24px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(200,98,42,0.2) 0%, transparent 70%);
+    }
+    .app-icon {
+      width: 180px;
+      height: 180px;
+      border-radius: 40px;
+      object-fit: cover;
+      box-shadow: 0 0 0 1px rgba(255,255,255,0.08), 0 24px 60px rgba(0,0,0,0.6);
+      position: relative;
+    }
+
+    /* ── SCREENSHOTS SECTION ────────────────────── */
+    .screenshots-section { padding: 6rem 0; }
+    .section-label {
+      font-size: 0.62rem;
+      font-weight: 600;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1.2rem;
+    }
+    .section-heading {
+      font-size: clamp(1.8rem, 3vw, 2.4rem);
+      line-height: 1.2;
+      margin-bottom: 1rem;
+    }
+    .section-sub {
+      font-size: 0.98rem;
+      line-height: 1.75;
+      color: var(--text-dim);
+      max-width: 560px;
+      margin-bottom: 4rem;
+    }
+
+    /* 2×2 screenshot grid */
+    .screenshots-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      max-width: 720px;
+      margin: 0 auto;
+    }
+    .screenshot-item {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    .screenshot-img {
+      display: block;
+      width: 100%;
+      height: auto;
+      border-radius: 16px;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.5);
+    }
+    .screenshot-caption {
+      font-size: 0.75rem;
+      color: var(--text-dim);
+      letter-spacing: 0.02em;
+      text-align: center;
+    }
+
+    /* ── HABITATS PROGRESSION ───────────────────── */
+    .habitats-section { padding: 6rem 0; border-top: 1px solid var(--border); }
+    .habitats-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 1rem;
+      margin-top: 3rem;
+    }
+    .habitat-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.2rem 1rem;
+      text-align: center;
+      transition: border-color 0.3s, transform 0.3s var(--ease-out);
+      position: relative;
+      overflow: hidden;
+    }
+    .habitat-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, var(--accent-pale) 0%, transparent 60%);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .habitat-card:hover { border-color: var(--border-accent); transform: translateY(-3px); }
+    .habitat-card:hover::before { opacity: 1; }
+    .habitat-card.highlighted {
+      border-color: var(--border-accent);
+      background: linear-gradient(135deg, rgba(200,98,42,0.08) 0%, var(--bg-surface) 60%);
+    }
+    .habitat-tier-num {
+      font-size: 0.6rem; font-weight: 600; letter-spacing: 0.12em;
+      color: var(--accent); margin-bottom: 0.5rem; position: relative;
+    }
+    .habitat-emoji { font-size: 1.8rem; margin-bottom: 0.5rem; display: block; }
+    .habitat-name {
+      font-family: 'Instrument Serif', serif; font-size: 0.95rem;
+      color: var(--text); margin-bottom: 0.2rem; position: relative;
+    }
+    .habitat-days { font-size: 0.68rem; color: var(--text-muted); position: relative; }
+
+    /* ── HOW IT WORKS ───────────────────────────── */
+    .how-section { padding: 6rem 0; border-top: 1px solid var(--border); }
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin-top: 3rem;
+    }
+    .step-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.8rem;
+    }
+    .step-num {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      background: var(--accent-pale);
+      border: 1px solid var(--border-accent);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.78rem; font-weight: 700;
+      color: var(--accent-light); margin-bottom: 1.2rem;
+    }
+    .step-title { font-family: 'Instrument Serif', serif; font-size: 1.2rem; color: var(--text); margin-bottom: 0.6rem; }
+    .step-body { font-size: 0.88rem; line-height: 1.65; color: var(--text-dim); }
+
+    /* ── CTA ────────────────────────────────────── */
+    .cta-section {
+      padding: 8rem 0;
+      text-align: center;
+      border-top: 1px solid var(--border);
+    }
+    .cta-section h2 { font-size: clamp(2rem, 4vw, 3rem); margin-bottom: 1rem; }
+    .cta-section p { font-size: 1rem; color: var(--text-dim); margin-bottom: 2.5rem; }
+
+    /* ── FOOTER ─────────────────────────────────── */
+    footer { padding: 2.5rem 0; border-top: 1px solid var(--border); text-align: center; }
+    footer p { font-size: 0.78rem; color: var(--text-muted); }
+
+    /* ── RESPONSIVE ─────────────────────────────── */
+    @media (max-width: 900px) {
+      .hero-inner { grid-template-columns: 1fr; text-align: center; gap: 2.5rem; }
+      .hero-tagline { margin: 0 auto 2rem; }
+      .hero-right { order: -1; }
+      .app-icon-wrap, .app-icon { width: 130px; height: 130px; }
+      .app-icon { border-radius: 30px; }
+      .habitats-grid { grid-template-columns: repeat(3, 1fr); }
+      .steps-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 640px) {
+      .container { padding: 0 1.25rem; }
+      nav { padding: 1rem 1.25rem; }
+      .project-hero { padding: 7rem 0 4rem; }
+      .screenshots-grid { gap: 1rem; }
+      .habitats-grid { grid-template-columns: repeat(2, 1fr); }
+      .steps-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 420px) {
+      .nav-links { gap: 1.2rem; }
+      .screenshots-grid { grid-template-columns: 1fr; max-width: 300px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── NAV ─────────────────────────────────── -->
+  <nav>
+    <a href="index.html" class="nav-logo">AG</a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="experience.html">Experience</a></li>
+      <li><a href="projects.html" class="active">Projects</a></li>
+    </ul>
+  </nav>
+
+  <!-- ── HERO ────────────────────────────────── -->
+  <section class="project-hero">
+    <div class="container">
+      <div class="hero-inner">
+        <div class="hero-left reveal">
+          <p class="hero-label">SIDE PROJECT · iOS APP</p>
+          <h1 class="hero-title">Habitat Budget</h1>
+          <p class="hero-tagline">
+            A budgeting app that turns financial discipline into a game. Stay under budget every day and watch your home evolve — from a humble cave all the way to a futuristic house.
+          </p>
+          <a href="https://apps.apple.com/app/habitat-budget/id6761746505"
+             target="_blank" rel="noopener noreferrer"
+             class="app-store-badge">
+            <img src="app-store-badge.svg" alt="Download on the App Store" />
+          </a>
+        </div>
+        <div class="hero-right reveal">
+          <div class="app-icon-wrap">
+            <img class="app-icon"
+                 src="https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/dd/0c/77/dd0c77de-3ee3-8401-3a5e-b0f889b76f85/AppIcon-0-0-1x_U007ephone-0-1-85-220.png/512x512bb.jpg"
+                 alt="Habitat Budget app icon" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── SCREENSHOTS ──────────────────────────── -->
+  <section class="screenshots-section">
+    <div class="container">
+      <p class="section-label reveal">THE APP</p>
+      <h2 class="section-heading reveal">Simple by design.<br>Rewarding by nature.</h2>
+      <p class="section-sub reveal">From onboarding to daily tracking — every screen built around one idea: make staying on budget feel worth it.</p>
+
+      <div class="screenshots-grid reveal">
+
+        <div class="screenshot-item">
+          <img class="screenshot-img" src="screenshots/welcome.png" alt="Habitat Budget welcome screen" />
+          <div class="screenshot-caption">Welcome</div>
+        </div>
+
+        <div class="screenshot-item">
+          <img class="screenshot-img" src="screenshots/budget-setup.png" alt="Set your budget screen" />
+          <div class="screenshot-caption">Set Budget</div>
+        </div>
+
+        <div class="screenshot-item">
+          <img class="screenshot-img" src="screenshots/home.png" alt="Home screen with habitat and budget tracker" />
+          <div class="screenshot-caption">Track Daily Spend</div>
+        </div>
+
+        <div class="screenshot-item">
+          <img class="screenshot-img" src="screenshots/history.png" alt="Spending history screen" />
+          <div class="screenshot-caption">History</div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── HABITAT PROGRESSION ─────────────────── -->
+  <section class="habitats-section">
+    <div class="container">
+      <p class="section-label reveal">THE PROGRESSION</p>
+      <h2 class="section-heading reveal">5 habitats. One streak at a time.</h2>
+      <p class="section-sub reveal">
+        Every day you stay under budget, your streak grows and your habitat evolves. Miss a day and your streak resets — and your habitat downgrades. The longer you hold on, the better your home gets.
+      </p>
+      <div class="reveal">
+        <div class="habitats-grid">
+          <div class="habitat-card">
+            <span class="habitat-emoji">🪵</span>
+            <div class="habitat-name">Firewood</div>
+          </div>
+          <div class="habitat-card">
+            <span class="habitat-emoji">🪨</span>
+            <div class="habitat-name">Cave</div>
+          </div>
+          <div class="habitat-card">
+            <span class="habitat-emoji">🧊</span>
+            <div class="habitat-name">Igloo</div>
+          </div>
+          <div class="habitat-card">
+            <span class="habitat-emoji">🛖</span>
+            <div class="habitat-name">Hut</div>
+          </div>
+          <div class="habitat-card">
+            <span class="habitat-emoji">🏠</span>
+            <div class="habitat-name">House</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── HOW IT WORKS ────────────────────────── -->
+  <section class="how-section">
+    <div class="container">
+      <p class="section-label reveal">HOW IT WORKS</p>
+      <h2 class="section-heading reveal">Budgeting with stakes.</h2>
+      <div class="steps-grid">
+        <div class="step-card reveal">
+          <div class="step-num">1</div>
+          <div class="step-title">Set your daily budget</div>
+          <div class="step-body">Choose a daily, weekly, monthly, or yearly budget. Habitat normalises it to a per-day figure so the math is always simple.</div>
+        </div>
+        <div class="step-card reveal">
+          <div class="step-num">2</div>
+          <div class="step-title">Log as you spend</div>
+          <div class="step-body">Add expenses with one tap. See your remaining budget shrink in real time. The app nudges you before you overshoot.</div>
+        </div>
+        <div class="step-card reveal">
+          <div class="step-num">3</div>
+          <div class="step-title">Protect your streak</div>
+          <div class="step-body">Finish the day under budget and your streak grows. Overspend and your streak resets to zero — and your habitat drops a tier.</div>
+        </div>
+        <div class="step-card reveal">
+          <div class="step-num">4</div>
+          <div class="step-title">Watch your home evolve</div>
+          <div class="step-body">Consistent streaks unlock better habitats, from a cave to a futuristic house. Your home is a live reflection of your discipline.</div>
+        </div>
+        <div class="step-card reveal">
+          <div class="step-num">5</div>
+          <div class="step-title">Review your history</div>
+          <div class="step-body">See spending patterns by day, week, and month. Understand where your budget goes so you can plan better next time.</div>
+        </div>
+        <div class="step-card reveal">
+          <div class="step-num">6</div>
+          <div class="step-title">Stay reminded</div>
+          <div class="step-body">Optional daily reminders and streak-at-risk alerts keep you on track. Your data never leaves your phone — fully offline.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── CTA ──────────────────────────────────── -->
+  <section class="cta-section">
+    <div class="container">
+      <h2 class="reveal">Start building your<br><em>habitat</em> today.</h2>
+<div class="reveal">
+        <a href="https://apps.apple.com/app/habitat-budget/id6761746505"
+           target="_blank" rel="noopener noreferrer"
+           class="app-store-badge">
+          <img src="app-store-badge.svg" alt="Download on the App Store" />
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FOOTER ──────────────────────────────── -->
+  <footer>
+    <p>&copy; 2026 Aayush George</p>
+  </footer>
+
+  <script>
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }
+      });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+  </script>
+
+</body>
+</html>

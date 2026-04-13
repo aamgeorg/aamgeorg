@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Experience — Aayush George</title>
+  <meta name="description" content="Professional experience and education of Aayush George, Product Manager." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:            #0A0A0F;
+      --bg-surface:    #111118;
+      --bg-hover:      #16161f;
+      --text:          #E8E5E0;
+      --text-dim:      #8A8790;
+      --text-muted:    #4A4850;
+      --accent:        #C8622A;
+      --accent-light:  #E07A3A;
+      --accent-pale:   rgba(200,98,42,0.12);
+      --border:        rgba(255,255,255,0.06);
+      --border-accent: rgba(200,98,42,0.3);
+      --ease-out:      cubic-bezier(0.16, 1, 0.3, 1);
+      --max-w:         860px;
+      --radius:        12px;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', -apple-system, system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+    h1, h2, h3 { font-family: 'Instrument Serif', serif; font-weight: 400; }
+    ::selection { background: var(--accent); color: #fff; }
+    :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+    .container { max-width: var(--max-w); margin: 0 auto; padding: 0 2.5rem; }
+
+    /* ── REVEAL ─────────────────────────────────── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.75s var(--ease-out), transform 0.75s var(--ease-out);
+    }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    /* ── NAV ────────────────────────────────────── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 1.2rem 2.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(10,10,15,0.88);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      font-family: 'Instrument Serif', serif;
+      font-style: italic;
+      font-size: 1.35rem;
+      color: var(--text);
+      text-decoration: none;
+    }
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; align-items: center; }
+    .nav-links a { color: var(--text-dim); text-decoration: none; font-size: 0.82rem; transition: color 0.3s; }
+    .nav-links a:hover, .nav-links a.active { color: var(--text); }
+
+    /* ── PAGE HERO ──────────────────────────────── */
+    .page-hero {
+      padding: 9rem 0 4rem;
+      position: relative;
+    }
+    .page-hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 55% 45% at 50% 0%, rgba(200,98,42,0.05) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-eyebrow {
+      font-size: 0.62rem;
+      font-weight: 600;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1rem;
+    }
+    .hero-title {
+      font-size: clamp(2.4rem, 5vw, 3.6rem);
+      line-height: 1.1;
+      margin-bottom: 1rem;
+    }
+    .hero-sub {
+      font-size: 1rem;
+      color: var(--text-dim);
+      line-height: 1.7;
+      max-width: 520px;
+    }
+
+    /* ── SECTION DIVIDER ────────────────────────── */
+    .section-divider {
+      padding: 5rem 0 1.5rem;
+    }
+    .section-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.6rem;
+    }
+    .section-heading {
+      font-size: clamp(2rem, 3.5vw, 2.8rem);
+      color: var(--text);
+      margin-bottom: 0.4rem;
+    }
+    .section-rule {
+      height: 1px;
+      background: var(--border);
+      margin-top: 1.8rem;
+    }
+
+    /* ── EXPERIENCE FEED ─────────────────────────── */
+    .exp-feed {
+      padding: 0.5rem 0 2rem;
+    }
+
+    .exp-item {
+      display: grid;
+      grid-template-columns: 68px 1fr;
+      gap: 0 1.6rem;
+      padding: 2rem 0;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+      transition: background 0.25s;
+    }
+    .exp-item:last-child { border-bottom: none; }
+
+    /* Logo column */
+    .exp-logo-col { display: flex; flex-direction: column; align-items: center; padding-top: 2px; }
+    .exp-logo {
+      width: 52px;
+      height: 52px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: #fff;
+      overflow: hidden;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .exp-logo img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      padding: 5px;
+    }
+    .exp-logo.initials {
+      background: var(--bg-surface);
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text-dim);
+      letter-spacing: -0.02em;
+    }
+
+    /* Connector line between entries */
+    .exp-logo-col .connector {
+      width: 1px;
+      flex: 1;
+      min-height: 24px;
+      background: var(--border);
+      margin-top: 10px;
+    }
+    .exp-item:last-child .connector { display: none; }
+
+    /* Content column */
+    .exp-content { padding-bottom: 0.25rem; }
+
+    .exp-company {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 0.15rem;
+      letter-spacing: -0.01em;
+    }
+    .exp-role {
+      font-size: 0.88rem;
+      color: var(--text-dim);
+      margin-bottom: 0.2rem;
+    }
+    .exp-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.2rem 0.6rem;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-bottom: 1.1rem;
+      align-items: center;
+    }
+    .exp-meta .dot { color: var(--text-muted); }
+    .exp-bullets {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+    .exp-bullets li {
+      font-size: 0.86rem;
+      line-height: 1.65;
+      color: var(--text-dim);
+      padding-left: 1.1rem;
+      position: relative;
+    }
+    .exp-bullets li::before {
+      content: '·';
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+      font-size: 1.1rem;
+      line-height: 1.5;
+    }
+
+    /* Highlight stat chips */
+    .stat-chip {
+      display: inline;
+      color: var(--accent-light);
+      font-weight: 500;
+    }
+
+    /* ── EDUCATION FEED ──────────────────────────── */
+    .edu-item {
+      display: grid;
+      grid-template-columns: 68px 1fr;
+      gap: 0 1.6rem;
+      padding: 2rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .edu-item:last-child { border-bottom: none; }
+
+    .edu-logo-col { display: flex; align-items: flex-start; padding-top: 2px; }
+    .edu-logo {
+      width: 52px;
+      height: 52px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: #fff;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .edu-logo img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      padding: 5px;
+    }
+    .edu-content {}
+    .edu-school {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 0.15rem;
+      letter-spacing: -0.01em;
+    }
+    .edu-degree {
+      font-size: 0.88rem;
+      color: var(--text-dim);
+      margin-bottom: 0.2rem;
+    }
+    .edu-meta {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-bottom: 0.85rem;
+    }
+    .edu-details {
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+    .edu-detail {
+      font-size: 0.83rem;
+      color: var(--text-dim);
+      line-height: 1.55;
+    }
+    .edu-detail strong {
+      color: var(--text);
+      font-weight: 500;
+    }
+    .edu-gpa {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      background: var(--accent-pale);
+      border: 1px solid var(--border-accent);
+      border-radius: 20px;
+      padding: 0.2rem 0.65rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--accent-light);
+      margin-top: 0.5rem;
+      width: fit-content;
+    }
+
+    /* ── FOOTER ─────────────────────────────────── */
+    footer {
+      padding: 3rem 0;
+      border-top: 1px solid var(--border);
+      text-align: center;
+      margin-top: 4rem;
+    }
+    footer p { font-size: 0.78rem; color: var(--text-muted); }
+
+    /* ── RESPONSIVE ─────────────────────────────── */
+    @media (max-width: 640px) {
+      .container { padding: 0 1.25rem; }
+      nav { padding: 1rem 1.25rem; }
+      .page-hero { padding: 7rem 0 3rem; }
+      .exp-item, .edu-item { grid-template-columns: 52px 1fr; gap: 0 1.1rem; }
+      .exp-logo, .edu-logo { width: 44px; height: 44px; }
+    }
+    @media (max-width: 420px) {
+      .nav-links { gap: 1.2rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── NAV ─────────────────────────────────── -->
+  <nav>
+    <a href="index.html" class="nav-logo">AG</a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="experience.html" class="active">Experience</a></li>
+      <li><a href="projects.html">Projects</a></li>
+    </ul>
+  </nav>
+
+  <!-- ── HERO ─────────────────────────────────── -->
+  <section class="page-hero">
+    <div class="container">
+      <p class="hero-eyebrow reveal">BACKGROUND</p>
+      <h1 class="hero-title reveal">Experience &amp;<br><em>Education</em></h1>
+      <p class="hero-sub reveal">Product manager with a track record of shipping AI-driven features, leading cross-functional teams, and turning customer needs into measurable results.</p>
+    </div>
+  </section>
+
+  <!-- ── WORK EXPERIENCE ───────────────────────── -->
+  <section>
+    <div class="container">
+      <div class="section-divider reveal">
+        <h2 class="section-heading">Work Experience</h2>
+        <div class="section-rule"></div>
+      </div>
+
+      <div class="exp-feed">
+
+        <!-- Bectran -->
+        <div class="exp-item reveal">
+          <div class="exp-logo-col">
+            <div class="exp-logo">
+              <img src="bectran_logo.jpeg" alt="Bectran logo" />
+            </div>
+            <div class="connector"></div>
+          </div>
+          <div class="exp-content">
+            <div class="exp-company">Bectran, Inc.</div>
+            <div class="exp-role">Product Specialist</div>
+            <div class="exp-meta">
+              <span>May 2024 – Present</span>
+              <span class="dot">·</span>
+              <span>Schaumburg, IL</span>
+            </div>
+            <ul class="exp-bullets">
+              <li>Leading and supporting the implementation of the Bectran platform for <span class="stat-chip">20+ companies</span>, ranging from mid-market to enterprise, resulting in successful go-lives and enhanced customer satisfaction.</li>
+              <li>Drive cross-functional collaboration with engineering and QA to manage Agile sprints averaging <span class="stat-chip">40+ tickets</span>, streamlining development cycles through effective prioritization.</li>
+              <li>Spearheaded the design and implementation of <span class="stat-chip">20+ feature enhancements</span> by defining product requirements and user stories, translating customer needs into actionable product improvements.</li>
+              <li>Defined requirements and led delivery of <span class="stat-chip">3 REST APIs</span> to optimize document management and reporting experiences, improving data accessibility and reducing manual data retrieval efforts.</li>
+              <li>Implemented an AI-powered OCR solution to automatically extract and populate key fields, replacing manual data entry and improving operational efficiency by <span class="stat-chip">30%</span>.</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Synergy Works Group -->
+        <div class="exp-item reveal">
+          <div class="exp-logo-col">
+            <div class="exp-logo">
+              <img src="synergy_works_group_logo.jpeg" alt="Synergy Works Group logo" />
+            </div>
+            <div class="connector"></div>
+          </div>
+          <div class="exp-content">
+            <div class="exp-company">Synergy Works Group</div>
+            <div class="exp-role">Senior Associate</div>
+            <div class="exp-meta">
+              <span>Feb 2024 – Sep 2024</span>
+              <span class="dot">·</span>
+              <span>Bloomington, IN</span>
+            </div>
+            <ul class="exp-bullets">
+              <li>Developed comprehensive analytics reports for client websites to identify key performance indicators, resulting in a <span class="stat-chip">30% increase in website traffic</span> and a <span class="stat-chip">20% increase in pages viewed per visit</span>.</li>
+              <li>Identified key client needs and effectively translated them into clear, actionable tasks for the engineering team, improving solution accuracy and accelerating delivery timelines.</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Kimberly-Clark -->
+        <div class="exp-item reveal">
+          <div class="exp-logo-col">
+            <div class="exp-logo">
+              <img src="kimberly_clark_logo.jpeg" alt="Kimberly-Clark logo" />
+            </div>
+            <div class="connector"></div>
+          </div>
+          <div class="exp-content">
+            <div class="exp-company">Kimberly-Clark</div>
+            <div class="exp-role">IT Marketing Business Partner Intern</div>
+            <div class="exp-meta">
+              <span>May 2023 – Aug 2023</span>
+              <span class="dot">·</span>
+              <span>Chicago, IL</span>
+            </div>
+            <ul class="exp-bullets">
+              <li>Developed a scalable Generative AI strategic roadmap to guide the company's future AI initiatives while embedding responsible AI practices across diverse applications.</li>
+              <li>Spearheaded an innovative project leveraging Generative AI for e-commerce content creation across Target, Walmart, and Amazon, resulting in a <span class="stat-chip">20% increase in marketing operations efficiency</span>.</li>
+              <li>Optimized Google Analytics tagging strategy based on business requirements leading to a <span class="stat-chip">70% decrease in website analytics discrepancies</span>, ensuring more accurate measurements.</li>
+              <li>Conducted user interviews across <span class="stat-chip">7+ brands</span> to assess the company's data quality and application of first-party data, formulating business strategies to elevate data usability.</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Al-Futtaim -->
+        <div class="exp-item reveal">
+          <div class="exp-logo-col">
+            <div class="exp-logo">
+              <img src="alfuttaim_logo.jpeg" alt="Al-Futtaim logo" />
+            </div>
+            <div class="connector"></div>
+          </div>
+          <div class="exp-content">
+            <div class="exp-company">Al-Futtaim</div>
+            <div class="exp-role">Marketing Intern</div>
+            <div class="exp-meta">
+              <span>Jun 2019 – Jul 2019</span>
+              <span class="dot">·</span>
+              <span>Dubai, UAE</span>
+            </div>
+            <ul class="exp-bullets">
+              <li>Conducted market research of <span class="stat-chip">10+ competing loyalty programs</span>, identifying key trends and customer preferences, resulting in a highly targeted and differentiated loyalty program.</li>
+              <li>Performed data cleansing and analyzed data on <span class="stat-chip">50,000+ consumer records</span> using Excel, helping the company assess recent sales performance and provide guidance for future campaigns.</li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── EDUCATION ──────────────────────────────── -->
+  <section>
+    <div class="container">
+      <div class="section-divider reveal">
+        <h2 class="section-heading">Education</h2>
+        <div class="section-rule"></div>
+      </div>
+
+      <div class="exp-feed">
+
+        <!-- MS IS -->
+        <div class="edu-item reveal">
+          <div class="edu-logo-col">
+            <div class="edu-logo">
+              <img src="kelley_school_of_business_logo.jpeg" alt="Kelley School of Business logo" />
+            </div>
+          </div>
+          <div class="edu-content">
+            <div class="edu-school">Kelley School of Business, Indiana University</div>
+            <div class="edu-degree">Master of Science, Information Systems</div>
+            <div class="edu-meta">Dec 2023 · Bloomington, IN</div>
+            <div class="edu-details">
+              <div class="edu-detail"><strong>Concentration:</strong> Business Intelligence &amp; Analytics</div>
+              <div class="edu-detail"><strong>Co-Concentration:</strong> Enterprise Security</div>
+            </div>
+            <div class="edu-gpa">⭐ GPA 3.80 / 4.00</div>
+          </div>
+        </div>
+
+        <!-- BS Business -->
+        <div class="edu-item reveal">
+          <div class="edu-logo-col">
+            <div class="edu-logo">
+              <img src="kelley_school_of_business_logo.jpeg" alt="Kelley School of Business logo" />
+            </div>
+          </div>
+          <div class="edu-content">
+            <div class="edu-school">Kelley School of Business, Indiana University</div>
+            <div class="edu-degree">Bachelor of Science in Business — Marketing &amp; Digital Marketing</div>
+            <div class="edu-meta">May 2022 · Bloomington, IN</div>
+            <div class="edu-gpa">⭐ GPA 3.82 / 4.00</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FOOTER ──────────────────────────────── -->
+  <footer>
+    <p>&copy; 2026 Aayush George</p>
+  </footer>
+
+  <script>
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }
+      });
+    }, { threshold: 0.08 });
+    document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+  </script>
+
+</body>
+</html>
